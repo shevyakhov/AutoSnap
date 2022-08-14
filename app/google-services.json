@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "963842372578",
+    "project_id": "autosnap-33183",
+    "storage_bucket": "autosnap-33183.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963842372578:android:fcd24328152baf3178ffbb",
+        "android_client_info": {
+          "package_name": "com.example.autosnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963842372578-ub6pvm0hmjj8m0j33lib3i0974s3uaci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuOk93JBSpbc05iX1oit-ciQa3YQPw36c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963842372578-ub6pvm0hmjj8m0j33lib3i0974s3uaci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
