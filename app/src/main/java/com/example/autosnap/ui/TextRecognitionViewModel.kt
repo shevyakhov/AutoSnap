@@ -26,11 +26,10 @@ class TextRecognitionViewModel : ViewModel() {
     suspend fun translateText(image: InputImage) =
         withContext(viewModelScope.coroutineContext) {
 
-            var r: List<String> = listOf()
             val textRecognizer =
                 TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-            val res = launch {
-                val process = textRecognizer.process(image).addOnCompleteListener { task ->
+            launch {
+                textRecognizer.process(image).addOnCompleteListener { task ->
                     val resultStr = StringBuilder()
                     resultStr.append(task.result.text)
                     translatedLiveData.setValue(resultStr)

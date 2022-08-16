@@ -127,7 +127,6 @@ class TextRecognitionFragment : Fragment() {
             binding.image.setImageURI(path)
             val image: InputImage
             try {
-                val observer = viewModel
                 image = InputImage.fromFilePath(requireContext(), path)
                 CoroutineScope(Dispatchers.Default).launch {
                     translate(image)
@@ -141,6 +140,6 @@ class TextRecognitionFragment : Fragment() {
     }
 
     private suspend fun translate(image: InputImage) {
-        val text = viewModel.translateText(image)
+        viewModel.translateText(image)
     }
 }
