@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.autosnap.R
 import com.example.autosnap.databinding.FragmentTextRecognitionBinding
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
@@ -57,6 +58,11 @@ class TextRecognitionFragment : Fragment() {
         viewModel = ViewModelProvider(this)[TextRecognitionViewModel::class.java]
         tempImageUri = initTempUri()
         registerTakePictureLauncher(tempImageUri)
+
+        val nameObserver = Observer<StringBuilder> { newName ->
+            binding.text.text = newName
+        }
+        viewModel.translatedLiveData.observe(viewLifecycleOwner, nameObserver)
         binding.button.setOnClickListener {
             takePhoto()
         }
@@ -121,21 +127,20 @@ class TextRecognitionFragment : Fragment() {
             binding.image.setImageURI(path)
             val image: InputImage
             try {
+                val observer = viewModel
                 image = InputImage.fromFilePath(requireContext(), path)
-                val res = StringBuilder()
-                // TODO: coroutines
-                val textRecognizer =
-                    TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-                textRecognizer.process(image).addOnSuccessListener {
-                    res.append(it)
-                    Log.e("____________", it.text)
+                CoroutineScope(Dispatchers.Default).launch {
+                    translate(image)
                 }
-                binding.text.text = res
-                Log.e("!", binding.text.text.toString())
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
         }
+    }
+
+    private suspend fun translate(image: InputImage) {
+        val text = viewModel.translateText(image)
     }
 }
