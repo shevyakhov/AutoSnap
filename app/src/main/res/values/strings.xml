@@ -5,4 +5,7 @@
     <string name="temp_images_dir">temp_images</string>
     <string name="temp_image">temp_image.jpg</string>
     <string name="authorities">com.example.autosnap</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="snap_a_picture">Snap a picture</string>
+    <string name="image_intent">image/*</string>
 </resources>
