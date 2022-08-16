@@ -120,7 +120,7 @@ class TextRecognitionFragment : Fragment() {
             if (it) {
                 binding.image.setImageURI(null) //rough handling of image changes. Real code need to handle different API levels.
                 binding.image.setImageURI(path)
-                DefineBuild(path)
+                defineBuild(path)
             }
         }
     }
@@ -130,12 +130,12 @@ class TextRecognitionFragment : Fragment() {
         pickPictureLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
                 binding.image.setImageURI(it)
-                DefineBuild(it)
+                defineBuild(it)
             }
         }
     }
 
-    private fun DefineBuild(path: Uri) {
+    private fun defineBuild(path: Uri) {
         val image: InputImage
         try {
             image = InputImage.fromFilePath(requireContext(), path)
