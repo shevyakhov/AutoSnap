@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/TextRecognitionFragment"
+        android:icon="@drawable/recognize_ic"
+        android:title="@string/recognition" />
+    <item
+        android:id="@+id/TranslationAndHistoryFragment"
+        android:icon="@drawable/database_ic"
+        android:title="@string/database" />
+</menu>

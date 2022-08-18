@@ -4,11 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/drawable/baseline_control_camera_blue_grey_400_24dp.xml" value="0.1635" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/drawable/database_ic.xml" value="0.1825" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/drawable/recognize_ic.xml" value="0.1825" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/drawable/round_corners.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/drawable/top_round_corners.xml" value="0.1825" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/activity_scanner.xml" value="0.1359375" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/fragment_camera.xml" value="0.153125" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/fragment_text_recognition.xml" value="0.22" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/layout/fragment_translation_and_history.xml" value="0.32916666666666666" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/menu/bottom_menu.xml" value="0.32916666666666666" />
+        <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/menu/navigation.xml" value="0.32916666666666666" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/xml/file_path_img.xml" value="0.15208333333333332" />
         <entry key="..\:/Users/shevy/AndroidStudioProjects/AutoSnap/app/src/main/res/xml/file_paths.xml" value="0.153125" />
       </map>

@@ -1,8 +1,9 @@
 package com.example.autosnap.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.autosnap.R
 import com.example.autosnap.databinding.ActivityMainBinding
 
@@ -14,8 +15,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container_view, TextRecognitionFragment()).commit()
+        /* init bottomNavigationView*/
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
+
     }
 
 }

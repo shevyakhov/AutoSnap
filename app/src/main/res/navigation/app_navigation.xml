@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/TextRecognitionFragment">
+    <fragment
+        android:id="@+id/TextRecognitionFragment"
+        android:name="com.example.autosnap.ui.TextRecognitionFragment"
+        android:label="fragment_text_recognition"
+        tools:layout="@layout/fragment_text_recognition">
+
+    </fragment>
+    <fragment
+        android:id="@+id/TranslationAndHistoryFragment"
+        android:name="com.example.autosnap.ui.TranslationAndHistoryFragment"
+        android:label="TranslationAndHistoryFragment"
+        tools:layout="@layout/fragment_translation_and_history">
+
+    </fragment>
+
+</navigation>

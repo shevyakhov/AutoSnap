@@ -8,4 +8,6 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="snap_a_picture">Snap a picture</string>
     <string name="image_intent">image/*</string>
+    <string name="recognition">recognition</string>
+    <string name="database">database</string>
 </resources>
