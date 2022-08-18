@@ -6,14 +6,14 @@
     app:startDestination="@id/TextRecognitionFragment">
     <fragment
         android:id="@+id/TextRecognitionFragment"
-        android:name="com.example.autosnap.ui.TextRecognitionFragment"
+        android:name="com.example.autosnap.ui.text_recognition.TextRecognitionFragment"
         android:label="fragment_text_recognition"
         tools:layout="@layout/fragment_text_recognition">
 
     </fragment>
     <fragment
         android:id="@+id/TranslationAndHistoryFragment"
-        android:name="com.example.autosnap.ui.TranslationAndHistoryFragment"
+        android:name="com.example.autosnap.ui.translation.TranslationAndHistoryFragment"
         android:label="TranslationAndHistoryFragment"
         tools:layout="@layout/fragment_translation_and_history">
 
