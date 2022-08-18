@@ -1,4 +1,4 @@
-package com.example.autosnap.ui
+package com.example.autosnap.ui.translation
 
 import androidx.lifecycle.ViewModel
 

@@ -1,4 +1,4 @@
-package com.example.autosnap.ui
+package com.example.autosnap.ui.text_recognition
 
 import android.app.Application
 import android.content.Context
