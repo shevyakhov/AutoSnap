@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,15 @@ class TranslationAndHistoryFragment : Fragment() {
 
     private var _binding: FragmentTranslationAndHistoryBinding? = null
     private val binding get() = _binding!!
-    private val adapter = TranslationAdapter()
+    private val adapter =
+        TranslationAdapter(object : TranslationAdapter.TranslationAdapterListener {
+            override fun onItemClicked(item: TextToTranslate) {
+                Toast.makeText(requireContext(), "translate me", Toast.LENGTH_SHORT).show()
+                viewModel.apply {
+
+                }
+            }
+        })
 
     private val viewModel by viewModels<TranslationAndHistoryViewModel>()
 
@@ -36,7 +45,7 @@ class TranslationAndHistoryFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        adapter.passData(
+        adapter.submitList(
             arrayListOf(
                 TextToTranslate("some text\nsome text"),
                 TextToTranslate("some text"),
