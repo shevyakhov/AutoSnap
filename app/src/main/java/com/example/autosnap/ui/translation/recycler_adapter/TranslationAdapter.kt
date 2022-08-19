@@ -3,19 +3,46 @@ package com.example.autosnap.ui.translation.recycler_adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.autosnap.R
 import com.example.autosnap.databinding.TranslationItemBinding
-import java.util.*
 
-class TranslationAdapter : RecyclerView.Adapter<TranslationAdapter.TranslationViewHolder>() {
+class TranslationAdapter(private val listener: TranslationAdapterListener) :
+    ListAdapter<TextToTranslate, TranslationAdapter.TranslationViewHolder>(DIFF) {
 
-    private val list = ArrayList<TextToTranslate>()
+    private companion object {
+        val DIFF = object : DiffUtil.ItemCallback<TextToTranslate>() {
+            override fun areItemsTheSame(
+                oldItem: TextToTranslate,
+                newItem: TextToTranslate
+            ): Boolean {
+                return oldItem.text == newItem.text
+            }
 
-    class TranslationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            override fun areContentsTheSame(
+                oldItem: TextToTranslate,
+                newItem: TextToTranslate
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+    }
+
+
+    inner class TranslationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = TranslationItemBinding.bind(itemView)
+
+        init {
+            binding.translateBtn.setOnClickListener {
+                listener.onItemClicked(getItem(adapterPosition))
+            }
+        }
+
         fun bind(binder: TextToTranslate) {
-            binding.textView.text = binder.text.uppercase(Locale.ROOT)
+            binding.textView.text = binder.text
         }
 
     }
@@ -27,10 +54,10 @@ class TranslationAdapter : RecyclerView.Adapter<TranslationAdapter.TranslationVi
     }
 
     override fun onBindViewHolder(holder: TranslationViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return list.size
+    interface TranslationAdapterListener {
+        fun onItemClicked(item: TextToTranslate)
     }
 }

@@ -12,8 +12,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.autosnap.R
 import com.example.autosnap.databinding.FragmentTextRecognitionBinding
 import com.google.mlkit.vision.common.InputImage
@@ -25,7 +25,7 @@ import java.io.IOException
 
 class TextRecognitionFragment : Fragment() {
     private var _binding: FragmentTextRecognitionBinding? = null
-    private lateinit var viewModel: TextRecognitionViewModel
+    private val viewModel by viewModels<TextRecognitionViewModel>()
     private lateinit var tempImageUri: Uri
 
     private val binding get() = _binding!!
@@ -34,7 +34,7 @@ class TextRecognitionFragment : Fragment() {
     private val permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val granted = permissions.entries.all {
-                it.value == true
+                it.value
             }
             if (granted) {
                 takePictureLauncher.launch(tempImageUri)
@@ -55,7 +55,6 @@ class TextRecognitionFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[TextRecognitionViewModel::class.java]
 
         tempImageUri = viewModel.uri
         registerTakePictureLauncher(tempImageUri)
