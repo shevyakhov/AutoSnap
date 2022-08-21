@@ -1,4 +1,4 @@
-package com.example.autosnap.ui
+package com.example.autosnap.ui.text_recognition
 
 import android.app.Application
 import android.content.Context
@@ -47,7 +47,7 @@ class TextRecognitionViewModel(private val app: Application) : AndroidViewModel(
         )
     }
 
-    val translatedLiveData: MutableLiveData<StringBuilder> by lazy {
+    val textLiveData: MutableLiveData<StringBuilder> by lazy {
         MutableLiveData<StringBuilder>()
     }
 
@@ -65,7 +65,7 @@ class TextRecognitionViewModel(private val app: Application) : AndroidViewModel(
                 textRecognizer.process(image).addOnSuccessListener { task ->
                     val resultStr = StringBuilder()
                     resultStr.append(task.text)
-                    translatedLiveData.setValue(resultStr)
+                    textLiveData.setValue(resultStr)
                 }
             }
         }

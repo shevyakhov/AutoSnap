@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorPrimary">
+    <!-- Ripple mask - applied to all selector states -->
+    <item>
+        <selector>
+            <item
+                android:state_focused="true"
+                android:state_pressed="true">
+                <shape>
+                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
+                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <corners
+                        android:bottomRightRadius="20dp"
+                        android:topRightRadius="20dp" />
+                </shape>
+
+
+            </item>
+            <item
+                android:state_focused="false"
+                android:state_pressed="true">
+                <shape>
+
+                    <solid android:color="@color/md_neutral" />
+                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <corners
+                        android:bottomRightRadius="20dp"
+                        android:topRightRadius="20dp" />
+                </shape>
+
+
+            </item>
+            <item
+                android:state_focused="true"
+                android:state_pressed="false">
+                <shape>
+
+                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
+                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <corners
+                        android:bottomRightRadius="20dp"
+                        android:topRightRadius="20dp" />
+                </shape>
+
+
+            </item>
+            <item
+                android:state_focused="false"
+                android:state_pressed="false">
+                <shape>
+
+                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
+                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <corners
+                        android:bottomRightRadius="20dp"
+                        android:topRightRadius="20dp" />
+                </shape>
+
+
+            </item>
+        </selector>
+    </item>
+</ripple>
