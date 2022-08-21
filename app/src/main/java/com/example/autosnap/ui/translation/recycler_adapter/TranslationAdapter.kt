@@ -3,6 +3,7 @@ package com.example.autosnap.ui.translation.recycler_adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,10 +35,14 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
 
     inner class TranslationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = TranslationItemBinding.bind(itemView)
+        private val nameObserver = Observer<Pair<Int, StringBuilder>> { translated ->
+            if (getItem(adapterPosition).id == translated.first)
+                binding.textView.text = translated.second
+        }
 
         init {
             binding.translateBtn.setOnClickListener {
-                listener.onItemClicked(getItem(adapterPosition))
+                listener.onItemClicked(getItem(adapterPosition), nameObserver)
             }
         }
 
@@ -58,6 +63,6 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
     }
 
     interface TranslationAdapterListener {
-        fun onItemClicked(item: TextToTranslate)
+        fun onItemClicked(item: TextToTranslate, observer: Observer<Pair<Int, StringBuilder>>)
     }
 }

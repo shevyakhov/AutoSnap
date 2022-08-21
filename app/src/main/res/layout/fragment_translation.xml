@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/md_theme_light_surface"
-    tools:context=".ui.translation.TranslationAndHistoryFragment">
+    tools:context=".ui.translation.TranslationFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar"

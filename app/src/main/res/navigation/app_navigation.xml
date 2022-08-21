@@ -13,9 +13,9 @@
     </fragment>
     <fragment
         android:id="@+id/TranslationAndHistoryFragment"
-        android:name="com.example.autosnap.ui.translation.TranslationAndHistoryFragment"
+        android:name="com.example.autosnap.ui.translation.TranslationFragment"
         android:label="TranslationAndHistoryFragment"
-        tools:layout="@layout/fragment_translation_and_history">
+        tools:layout="@layout/fragment_translation">
 
     </fragment>
 

@@ -62,7 +62,7 @@ class TextRecognitionFragment : Fragment() {
         val nameObserver = Observer<StringBuilder> { newName ->
             binding.text.text = newName
         }
-        viewModel.translatedLiveData.observe(viewLifecycleOwner, nameObserver)
+        viewModel.textLiveData.observe(viewLifecycleOwner, nameObserver)
         binding.cameraBtn.setOnClickListener {
             takePhoto()
         }
