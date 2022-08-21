@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,16 +23,18 @@ class TranslationFragment : Fragment() {
     private val binding get() = _binding!!
     private val adapter =
         TranslationAdapter(object : TranslationAdapter.TranslationAdapterListener {
-            override fun onItemClicked(
-                item: TextToTranslate,
-                observer: Observer<TextToTranslate>
-            ) {
-                viewModel.translatedLiveData.observe(viewLifecycleOwner, observer)
+            override fun onItemClicked(item: TextToTranslate, observer: Observer<TextToTranslate>) {
 
-                viewModel.apply {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        viewModel.translate(item)
+                if (item.translatedText == "") {
+                    viewModel.apply {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            viewModel.translate(item)
+                        }
+                        viewModel.translatedLiveData.observe(viewLifecycleOwner, observer)
                     }
+                } else {
+                    item.isTranslated = !item.isTranslated
+                    viewModel.translatedLiveData.value = item
                 }
             }
         })
@@ -54,16 +57,26 @@ class TranslationFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        adapter.submitList(
-            arrayListOf(
-                TextToTranslate(0, "some text to translate\nfor you"),
-                TextToTranslate(1, "based department"),
-                TextToTranslate(2, "crippling depression"),
-                TextToTranslate(3, "mouse crawling"),
-                TextToTranslate(4, "reject humanity become pussy"),
-                TextToTranslate(5, "youth\nis\nending")
-            )
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                return false
+            }
+        })
+        val vist = arrayListOf(
+            TextToTranslate(0, "some text to translate\nfor you"),
+            TextToTranslate(1, "based department"),
+            TextToTranslate(2, "crippling depression"),
+            TextToTranslate(3, "mouse crawling"),
+            TextToTranslate(4, "reject humanity become pussy"),
+            TextToTranslate(5, "youth\nis\nending")
         )
+        adapter.submitOriginalList(vist)
+
     }
 
 

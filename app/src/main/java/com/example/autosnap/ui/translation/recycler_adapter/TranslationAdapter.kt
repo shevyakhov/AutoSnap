@@ -1,9 +1,10 @@
 package com.example.autosnap.ui.translation.recycler_adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +13,33 @@ import com.example.autosnap.R
 import com.example.autosnap.databinding.TranslationItemBinding
 
 class TranslationAdapter(private val listener: TranslationAdapterListener) :
-    ListAdapter<TextToTranslate, TranslationAdapter.TranslationViewHolder>(DIFF) {
+    ListAdapter<TextToTranslate, TranslationAdapter.TranslationViewHolder>(DIFF), Filterable {
+    private var originalList: List<TextToTranslate> = currentList.toList()
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                return FilterResults().apply {
+                    values = if (constraint.isNullOrEmpty())
+                        originalList
+                    else
+                        onFilter(originalList, constraint.toString())
+                }
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                submitList(results?.values as? List<TextToTranslate>)
+            }
+        }
+    }
+
+    private fun onFilter(
+        originalList: List<TextToTranslate>,
+        string: String
+    ): List<TextToTranslate> {
+        return originalList.filter { it.originalText.lowercase().contains(string) }
+    }
 
     private companion object {
         val DIFF = object : DiffUtil.ItemCallback<TextToTranslate>() {
@@ -20,7 +47,7 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
                 oldItem: TextToTranslate,
                 newItem: TextToTranslate
             ): Boolean {
-                return oldItem.originalText == newItem.originalText
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
@@ -34,12 +61,24 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
     }
 
 
+    fun submitOriginalList(list: List<TextToTranslate>) {
+        originalList = list
+        submitList(list)
+    }
+
+
     inner class TranslationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = TranslationItemBinding.bind(itemView)
         private val nameObserver = Observer<TextToTranslate> { textToTranslate ->
 
+            if (adapterPosition != -1) {
+                if (getItem(adapterPosition).id == textToTranslate.id)
+                    bindUpdate(textToTranslate, adapterPosition)
+            }
+        }
+
+        private fun bindUpdate(textToTranslate: TextToTranslate, adapterPosition: Int) {
             if (getItem(adapterPosition).id == textToTranslate.id) {
-                Log.e("is", textToTranslate.isTranslated.toString())
                 if (!textToTranslate.isTranslated) {
                     binding.textView.text = textToTranslate.translatedText
                     binding.translateBtn.setImageResource(R.drawable.back_ic)
@@ -52,9 +91,11 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
             }
         }
 
+
         init {
             binding.translateBtn.setOnClickListener {
-                listener.onItemClicked(getItem(adapterPosition), nameObserver)
+                val position = getItem(adapterPosition)
+                listener.onItemClicked(position, nameObserver)
             }
         }
 
@@ -77,4 +118,5 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
     interface TranslationAdapterListener {
         fun onItemClicked(item: TextToTranslate, observer: Observer<TextToTranslate>)
     }
+
 }

@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 class TranslationViewModel(private val app: Application) : AndroidViewModel(app) {
     val translatedLiveData: MutableLiveData<TextToTranslate> by lazy {
         MutableLiveData<TextToTranslate>()
-
     }
 
     suspend fun translate(text: TextToTranslate) {
@@ -54,8 +53,7 @@ class TranslationViewModel(private val app: Application) : AndroidViewModel(app)
                             resultStr.toString(),
                             isTranslated = text.isTranslated
                         )
-                        Log.e("vmin", translatedLiveData.value!!.isTranslated.toString())
-                        Log.e("trans", translatedLiveData.value?.translatedText.toString())
+
                     }
                     .addOnFailureListener {
                         Toast.makeText(
@@ -69,5 +67,6 @@ class TranslationViewModel(private val app: Application) : AndroidViewModel(app)
         }
 
     }
+
 
 }
