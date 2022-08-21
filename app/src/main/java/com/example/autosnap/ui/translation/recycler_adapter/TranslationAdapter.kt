@@ -1,5 +1,6 @@
 package com.example.autosnap.ui.translation.recycler_adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
                 oldItem: TextToTranslate,
                 newItem: TextToTranslate
             ): Boolean {
-                return oldItem.text == newItem.text
+                return oldItem.originalText == newItem.originalText
             }
 
             override fun areContentsTheSame(
@@ -35,9 +36,20 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
 
     inner class TranslationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = TranslationItemBinding.bind(itemView)
-        private val nameObserver = Observer<Pair<Int, StringBuilder>> { translated ->
-            if (getItem(adapterPosition).id == translated.first)
-                binding.textView.text = translated.second
+        private val nameObserver = Observer<TextToTranslate> { textToTranslate ->
+
+            if (getItem(adapterPosition).id == textToTranslate.id) {
+                Log.e("is", textToTranslate.isTranslated.toString())
+                if (!textToTranslate.isTranslated) {
+                    binding.textView.text = textToTranslate.translatedText
+                    binding.translateBtn.setImageResource(R.drawable.back_ic)
+                    getItem(adapterPosition).isTranslated = true
+                } else {
+                    binding.textView.text = textToTranslate.originalText
+                    binding.translateBtn.setImageResource(R.drawable.translate_ic)
+                    getItem(adapterPosition).isTranslated = false
+                }
+            }
         }
 
         init {
@@ -47,7 +59,7 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
         }
 
         fun bind(binder: TextToTranslate) {
-            binding.textView.text = binder.text
+            binding.textView.text = binder.originalText
         }
 
     }
@@ -63,6 +75,6 @@ class TranslationAdapter(private val listener: TranslationAdapterListener) :
     }
 
     interface TranslationAdapterListener {
-        fun onItemClicked(item: TextToTranslate, observer: Observer<Pair<Int, StringBuilder>>)
+        fun onItemClicked(item: TextToTranslate, observer: Observer<TextToTranslate>)
     }
 }

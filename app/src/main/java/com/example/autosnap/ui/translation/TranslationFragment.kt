@@ -24,12 +24,13 @@ class TranslationFragment : Fragment() {
         TranslationAdapter(object : TranslationAdapter.TranslationAdapterListener {
             override fun onItemClicked(
                 item: TextToTranslate,
-                observer: Observer<Pair<Int, StringBuilder>>
+                observer: Observer<TextToTranslate>
             ) {
                 viewModel.translatedLiveData.observe(viewLifecycleOwner, observer)
+
                 viewModel.apply {
                     CoroutineScope(Dispatchers.Default).launch {
-                        viewModel.translate(item.text, item.id)
+                        viewModel.translate(item)
                     }
                 }
             }
