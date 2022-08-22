@@ -21,25 +21,27 @@ class TranslationFragment : Fragment() {
 
     private var _binding: FragmentTranslationBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<TranslationViewModel>()
+
     private val adapter =
         TranslationAdapter(object : TranslationAdapter.TranslationAdapterListener {
             override fun onItemClicked(item: TextToTranslate, observer: Observer<TextToTranslate>) {
 
                 if (item.translatedText == "") {
+
                     viewModel.apply {
                         CoroutineScope(Dispatchers.Default).launch {
-                            viewModel.translate(item)
+                            translate(item)
                         }
-                        viewModel.translatedLiveData.observe(viewLifecycleOwner, observer)
+                        translatedLiveData.observe(viewLifecycleOwner, observer)
                     }
+
                 } else {
                     item.isTranslated = !item.isTranslated
                     viewModel.translatedLiveData.value = item
                 }
             }
         })
-
-    private val viewModel by viewModels<TranslationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
