@@ -19,6 +19,7 @@ import java.io.File
 
 class TextRecognitionViewModel(private val app: Application) : AndroidViewModel(app) {
     var uri: Uri
+    var currentUri: Uri? = null
 
     init {
         uri = initTempUri()
@@ -32,7 +33,6 @@ class TextRecognitionViewModel(private val app: Application) : AndroidViewModel(
         ) //gets the directory for the temporary images dir
 
         tempImagesDir.mkdir() //Create the temp_images dir
-
         //Creates the temp_image.jpg file
         val tempImage = File(
             tempImagesDir, //prefix the new abstract path with the temporary images dir path

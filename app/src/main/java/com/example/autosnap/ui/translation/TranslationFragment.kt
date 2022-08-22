@@ -69,7 +69,7 @@ class TranslationFragment : Fragment() {
                 return false
             }
         })
-        val vist = arrayListOf(
+        val list = arrayListOf(
             TextToTranslate(0, "some text to translate\nfor you"),
             TextToTranslate(1, "based department"),
             TextToTranslate(2, "crippling depression"),
@@ -77,7 +77,7 @@ class TranslationFragment : Fragment() {
             TextToTranslate(4, "reject humanity become pussy"),
             TextToTranslate(5, "youth\nis\nending")
         )
-        adapter.submitOriginalList(vist)
+        adapter.submitOriginalList(list)
 
     }
 

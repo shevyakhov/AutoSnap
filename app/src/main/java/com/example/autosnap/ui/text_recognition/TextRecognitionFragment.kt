@@ -2,6 +2,7 @@ package com.example.autosnap.ui.text_recognition
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import androidx.lifecycle.Observer
 import com.example.autosnap.R
 import com.example.autosnap.databinding.FragmentTextRecognitionBinding
 import com.google.mlkit.vision.common.InputImage
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,22 +28,25 @@ import java.io.IOException
 
 class TextRecognitionFragment : Fragment() {
     private var _binding: FragmentTextRecognitionBinding? = null
+
     private val viewModel by viewModels<TextRecognitionViewModel>()
     private lateinit var tempImageUri: Uri
 
     private val binding get() = _binding!!
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private lateinit var pickPictureLauncher: ActivityResultLauncher<String>
-    private val permReqLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val granted = permissions.entries.all {
-                it.value
-            }
-            if (granted) {
-                takePictureLauncher.launch(tempImageUri)
-
-            }
+    private lateinit var permReqLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var cropLauncher: ActivityResultLauncher<Any?>
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity(input as Uri).getIntent(context)
         }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent)?.uri
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,8 +63,10 @@ class TextRecognitionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tempImageUri = viewModel.uri
+        registerPermLauncher()
         registerTakePictureLauncher(tempImageUri)
         registerPickPictureLauncher()
+        cropActivityResultContract()
         val nameObserver = Observer<StringBuilder> { newName ->
             binding.text.text = newName
         }
@@ -68,6 +76,10 @@ class TextRecognitionFragment : Fragment() {
         }
         binding.galleryBtn.setOnClickListener {
             pickPhoto()
+        }
+        binding.image.setOnClickListener {
+            if (viewModel.currentUri != null)
+                cropLauncher.launch(viewModel.currentUri)
         }
     }
 
@@ -120,6 +132,7 @@ class TextRecognitionFragment : Fragment() {
                 binding.image.setImageURI(null) //rough handling of image changes. Real code need to handle different API levels.
                 binding.image.setImageURI(path)
                 defineBuild(path)
+                viewModel.currentUri = path
             }
         }
     }
@@ -128,10 +141,38 @@ class TextRecognitionFragment : Fragment() {
         //Creates the ActivityResultLauncher
         pickPictureLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it != null) {
+                binding.image.setImageURI(null) //rough handling of image changes. Real code need to handle different API levels.
                 binding.image.setImageURI(it)
                 defineBuild(it)
+                viewModel.currentUri = it
             }
         }
+    }
+
+    private fun cropActivityResultContract() {
+
+        cropLauncher = registerForActivityResult(cropActivityResultContract) {
+            it.let {
+                binding.image.setImageURI(it)
+                viewModel.currentUri = it
+                if (it != null) {
+                    defineBuild(it)
+                }
+            }
+        }
+    }
+
+    private fun registerPermLauncher() {
+        permReqLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                val granted = permissions.entries.all {
+                    it.value
+                }
+                if (granted) {
+                    takePictureLauncher.launch(tempImageUri)
+
+                }
+            }
     }
 
     private fun defineBuild(path: Uri) {
@@ -148,6 +189,9 @@ class TextRecognitionFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (viewModel.currentUri != null) {
+            binding.image.setImageURI(viewModel.currentUri)
+        }
         binding.root.background = requireActivity().getDrawable(R.color.md_theme_light_background)
     }
 }
