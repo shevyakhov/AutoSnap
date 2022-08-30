@@ -69,15 +69,15 @@ class TranslationFragment : Fragment() {
                 return false
             }
         })
-        val list = arrayListOf(
-            TextToTranslate(0, "some text to translate\nfor you"),
-            TextToTranslate(1, "based department"),
-            TextToTranslate(2, "crippling depression"),
-            TextToTranslate(3, "mouse crawling"),
-            TextToTranslate(4, "reject humanity become pussy"),
-            TextToTranslate(5, "youth\nis\nending")
+        val testList = arrayListOf(
+            TextToTranslate(0, "get some text to translate\nin this application"),
+            TextToTranslate(1, "This is department of translation"),
+            TextToTranslate(2, "depression is not a joke"),
+            TextToTranslate(3, "mouse crawling at insane speed"),
+            TextToTranslate(4, "reject humanity become something"),
+            TextToTranslate(5, "our youth\nis\nending")
         )
-        adapter.submitOriginalList(list)
+        adapter.submitOriginalList(testList)
 
     }
 
