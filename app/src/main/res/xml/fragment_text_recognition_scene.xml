@@ -39,7 +39,8 @@
             motion:layout_constraintBottom_toTopOf="@+id/cameraBtn"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="80dp" />
     </ConstraintSet>
     <Transition
         motion:constraintSetEnd="@+id/start"
