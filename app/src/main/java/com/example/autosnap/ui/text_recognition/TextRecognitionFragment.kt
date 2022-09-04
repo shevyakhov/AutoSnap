@@ -66,6 +66,7 @@ class TextRecognitionFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fragmentLayout.isInteractionEnabled = false
 
         tempImageUri = viewModel.uri
         registerPermLauncher()
@@ -110,8 +111,11 @@ class TextRecognitionFragment : Fragment() {
             binding.text.isClickable = isNotEmpty
             binding.text.isFocusable = isNotEmpty
             binding.text.visibility = View.VISIBLE
+
+            binding.fragmentLayout.isInteractionEnabled = true
         } else {
             binding.text.visibility = View.INVISIBLE
+            binding.fragmentLayout.isInteractionEnabled = false
         }
     }
 
