@@ -1,14 +1,19 @@
 package com.example.autosnap.ui.text_recognition
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -67,19 +72,46 @@ class TextRecognitionFragment : Fragment() {
         registerTakePictureLauncher(tempImageUri)
         registerPickPictureLauncher()
         cropActivityResultContract()
-        val nameObserver = Observer<StringBuilder> { newName ->
-            binding.text.text = newName
+        val recognitionObserver = Observer<StringBuilder> { newText ->
+            binding.text.text = newText
+            setTextView(newText.isNotEmpty())
+
+
         }
-        viewModel.textLiveData.observe(viewLifecycleOwner, nameObserver)
+        viewModel.textLiveData.observe(viewLifecycleOwner, recognitionObserver)
         binding.cameraBtn.setOnClickListener {
             takePhoto()
         }
         binding.galleryBtn.setOnClickListener {
             pickPhoto()
         }
+        binding.text.setOnClickListener {
+            if (binding.text.text.isNotEmpty()) {
+                val clipboard: ClipboardManager =
+                    requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val clip: ClipData =
+                    ClipData.newPlainText("simple Text", binding.text.text.toString())
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(
+                    context,
+                    requireContext().getString(R.string.clipboard_copy),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
         binding.image.setOnClickListener {
             if (viewModel.currentUri != null)
                 cropLauncher.launch(viewModel.currentUri)
+        }
+    }
+
+    private fun setTextView(isNotEmpty: Boolean) {
+        if (isNotEmpty) {
+            binding.text.isClickable = isNotEmpty
+            binding.text.isFocusable = isNotEmpty
+            binding.text.visibility = View.VISIBLE
+        } else {
+            binding.text.visibility = View.INVISIBLE
         }
     }
 
@@ -131,7 +163,7 @@ class TextRecognitionFragment : Fragment() {
             if (it) {
                 binding.image.setImageURI(null) //rough handling of image changes. Real code need to handle different API levels.
                 binding.image.setImageURI(path)
-                defineBuild(path)
+                setTextDefiner(path)
                 viewModel.currentUri = path
             }
         }
@@ -143,7 +175,7 @@ class TextRecognitionFragment : Fragment() {
             if (it != null) {
                 binding.image.setImageURI(null) //rough handling of image changes. Real code need to handle different API levels.
                 binding.image.setImageURI(it)
-                defineBuild(it)
+                setTextDefiner(it)
                 viewModel.currentUri = it
             }
         }
@@ -152,12 +184,10 @@ class TextRecognitionFragment : Fragment() {
     private fun cropActivityResultContract() {
 
         cropLauncher = registerForActivityResult(cropActivityResultContract) {
-            it.let {
+            if (it != null) {
                 binding.image.setImageURI(it)
                 viewModel.currentUri = it
-                if (it != null) {
-                    defineBuild(it)
-                }
+                setTextDefiner(it)
             }
         }
     }
@@ -175,7 +205,7 @@ class TextRecognitionFragment : Fragment() {
             }
     }
 
-    private fun defineBuild(path: Uri) {
+    private fun setTextDefiner(path: Uri) {
         val image: InputImage
         try {
             image = InputImage.fromFilePath(requireContext(), path)
@@ -190,6 +220,17 @@ class TextRecognitionFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (viewModel.currentUri != null) {
+            val typedValue = TypedValue()
+            requireActivity().theme.resolveAttribute(
+                android.R.attr.selectableItemBackground,
+                typedValue,
+                true
+            )
+            if (typedValue.resourceId != 0) {
+                binding.image.setBackgroundResource(typedValue.resourceId)
+            } else {
+                binding.image.setBackgroundResource(typedValue.data)
+            }
             binding.image.setImageURI(viewModel.currentUri)
         }
         binding.root.background = requireActivity().getDrawable(R.color.md_theme_light_background)
