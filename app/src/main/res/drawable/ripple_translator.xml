@@ -8,8 +8,8 @@
                 android:state_focused="true"
                 android:state_pressed="true">
                 <shape>
-                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
-                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <solid android:color="?attr/colorTertiaryContainer" />
+                    <stroke android:color="?attr/colorOnPrimary" />
                     <corners
                         android:bottomRightRadius="20dp"
                         android:topRightRadius="20dp" />
@@ -23,7 +23,7 @@
                 <shape>
 
                     <solid android:color="@color/md_neutral" />
-                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <stroke android:color="?attr/colorOnPrimary" />
                     <corners
                         android:bottomRightRadius="20dp"
                         android:topRightRadius="20dp" />
@@ -36,8 +36,8 @@
                 android:state_pressed="false">
                 <shape>
 
-                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
-                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <solid android:color="?attr/colorTertiaryContainer" />
+                    <stroke android:color="?attr/colorOnPrimary" />
                     <corners
                         android:bottomRightRadius="20dp"
                         android:topRightRadius="20dp" />
@@ -50,8 +50,8 @@
                 android:state_pressed="false">
                 <shape>
 
-                    <solid android:color="@color/md_theme_light_tertiaryContainer" />
-                    <stroke android:color="@color/md_theme_light_onPrimary" />
+                    <solid android:color="?attr/colorTertiaryContainer" />
+                    <stroke android:color="?attr/colorOnPrimary" />
                     <corners
                         android:bottomRightRadius="20dp"
                         android:topRightRadius="20dp" />

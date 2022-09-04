@@ -9,5 +9,7 @@
     <string name="snap_a_picture">Snap a picture</string>
     <string name="image_intent">image/*</string>
     <string name="recognition">recognition</string>
+    <string name="empty_string" />
     <string name="database">database</string>
+    <string name="clipboard_copy">Текст скопирован в буфер обмена</string>
 </resources>

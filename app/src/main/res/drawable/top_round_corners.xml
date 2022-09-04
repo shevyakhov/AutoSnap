@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/md_theme_light_tertiaryContainer" />
-    <stroke android:color="@color/md_theme_light_onTertiaryContainer" />
+    <solid android:color="?attr/colorTertiaryContainer" />
     <corners
         android:topLeftRadius="20dp"
         android:topRightRadius="20dp" />
